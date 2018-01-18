@@ -1,0 +1,146 @@
+Semaphores
+
+	Identify the critical region of code:  These are the statements sharng same resource, for each shared resource there will be a semaphore
+	Its a sync technique 
+	Kernel data structures 
+	struct simaphores
+	{
+		1 int sVar;// Atomic operations will be performed on it 
+					Two  Atomic operations are wait and signal 
+						Wait 	decrements
+						Signal  increments
+		2 Two atomic operations 
+		3 List of waiting processes
+		4 Spin lock
+	};
+	Initialize the simaphore var
+	wait algo
+		if(svar > 0)
+		{
+			decrement it wait to 0
+		}
+		else
+		{
+			go to the waiting list 
+		}
+	signal algo 
+		- increment sval 
+		- generate an event for list of waiting processots
+	Use wait before critical statement 
+	Use Signal after critical statement 
+
+
+
+
+semget (userkey(may not be unique), no of semaphore(siZE OF SEMAPHORE ARRAY ), IPC_CREAT |666)(it 'll create only if not created) )
+	returns a kernel key(this is unique); this key will be used in he rest of program 
+
+semctl(kernel key, index, commands, ...(1 optional arg) )
+	commands
+		SETVAL initialize the value of sVal
+			union.val = 1;
+		IPC_RMID used to destroy the semaphore use this in atexit() so that semaphores can be deleted or they'll exist for ever 
+
+		... is a union
+
+			Union semun
+			{
+				int Val;
+				userPermissions
+				bufferPermissions
+				processPermissions
+			}; its present in usr/include/bits
+semop(kernel key, struct sembuf pointer)
+
+	struct sembuf
+	{
+		index semaphore index if i give 3 it ll perform the below operation till 3 indexes
+		operations(+1,-1)
+		flags SEM_UNDO helps tp revert wait operation on interrupt(any interupt that may distroy critical statement)
+	}
+	
+
+
+
+note* use semaphores for sharable not shared resources means there can be a remote possibility that the sharable resource can be utilized afterwords
+
+
+
+
+
+example
+
+declare union sembuf
+{
+	
+};
+sembuf op;
+make sval = 1;
+for()
+if(get_semaphore() == 0): wait *note: test and decrement
+sleap
+critical regioon 
+sleap
+release_semaphore(): signal
+
+get_semaphore()
+{
+	op.index = 0
+	op.operation = -1 for waite
+	if	(flag UNDO <1)
+		semop ()
+		{
+			failed to ger the semaphore 
+			return -1;
+		}
+	ret 0; on success
+}
+release_semaphore()
+{
+	rest is same annd
+	op.operation = 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+way to run 2 programs in the backgroind and foreground 
+./ranveer & command 1 background
+./ranveer	command 2 foreground
+
+
+
+
+GDB
+	gcc -g -o abc abc.c
+	gdb abc
+
+	commands for gdb now
+		run
+		break 26 -> setting break point command
+			commands
+				print i
+				print j
+				print arr[0]@10 0 to 10
+				end
+		run
+
+		cont for continuing
+
+
+
+
+
+use unlink in atexit() command 
