@@ -1,0 +1,79 @@
+Mutex is another name for binary simaphores 
+faster version of simaphores using macros 
+mutualy exclusion 
+only 1 process has access to thr resouurces at a time 
+
+
+
+#include <pthread.h>
+
+4 calls in mutex
+
+pthread_mutex
+pthread_mutex_lock
+pthread_mutex_unlock
+pthread_mutex_destroy
+
+
+Thread attributes
+
+#include <pthread.h>
+pthread_attr_init(pthread_attr * attr);
+
+0 is returned no success
+
+
+socket 
+its a named pipe
+
+ipaddress : port_number
+
+
+sys call  : socket(domain, type , protocol);
+DOMAIN: AF_UNIX, AFINET
+type: stream sockets(SOCK_STREAM)and Datagram Sockets(SOCK_DGRAM)
+SOCK_STREAM connection oriented Both ends should be active at a time like whats app call 
+SOCK_DGRAM connection less 
+protocol: TCP/IP, UDP/IP 
+it returns discriptor
+
+Calls by server
+
+bind();( is a sys call which gives name to the socket) this socket name is across the network
+socket name : ip:pn+
+
+listen() call creates a queue of incoming commections , its a REQUEST QUEUE
+
+accept() call accepts the req of clients 
+
+Client call 
+connect to server by connect() call
+
+connect(own file dis, server socket address format, address length) theres another 4 th invisible parameter which tells server of his address format
+
+
+Address Format
+
+socaddr
+sockaddr_un //for unix
+sock_in //for others
+
+now server is blocked on accept call 
+
+accept call creates a new un named socket  exact replica of server main socket  whick exclusively connects to the particular client
+so for no of requests in the req queue corresponds to as many accept calls corresponding to as many unnamed sockets
+
+
+moment the client igetrs the ackowledgement  clients pause us played or removed and exec moves further
+
+
+  int accept(int sockfd, struct sockaddr *addr(unpassed invisible 4th argument), socklen_t *addrlen);
+
+
+  close (filedis) closes the connection 
+  struct sockaddr_in
+  {
+  	short int sinfamily;
+  	int sin _port
+  	struct 
+  }

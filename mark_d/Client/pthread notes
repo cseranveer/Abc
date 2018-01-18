@@ -1,0 +1,12 @@
+
+/*
+pthread _join requires thread id and thread return 
+using simaphores in threads 
+to initialize simaphores like simget we use
+siminit(sem _t * sem, int pshared, u int value) method
+it returns 0 for success 
+
+semwait(sem_t * sem) decrement 
+
+sempost (sem_t * sem) incerment
+both take a pointer to the semaphore object initialized by the call ro sem_init 
